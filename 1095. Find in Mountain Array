@@ -1,0 +1,84 @@
+/**
+ * // This is the MountainArray's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * class MountainArray {
+ *   public:
+ *     int get(int index);
+ *     int length();
+ * };
+ */
+
+class Solution {
+public:
+    bool finding1(int target,MountainArray &m,int l,int h,int & ans)
+    {
+        if (l>h)  return false;
+        int mid=(l+h)/2;
+        int ele=m.get(mid);
+        if (ele==target)
+        {
+            ans=mid;
+            return true;
+        }
+        else if (ele>target)
+        {
+            return finding1(target,m,l,mid-1,ans);
+        }
+        
+        return finding1(target,m,mid+1,h,ans);
+        
+    }
+    bool finding2(int target,MountainArray &m,int l,int h,int & ans)
+    {
+        if (l>h)  return false;
+        int mid=(l+h)/2;
+        int ele=m.get(mid);
+        if (ele==target)
+        {
+            ans=mid;
+            return true;
+        }
+        else if (ele>target)
+        {
+            return finding1(target,m,mid+1,h,ans);
+        }
+        
+        return finding1(target,m,l,mid-1,ans);
+        
+    }
+    
+    
+    int hat( MountainArray &m,int l,int h,int low,int high)
+    {
+        if (l>h)  return INT32_MAX;
+        int mid= l+(h-l)/2;
+        if (mid==low) mid++;
+        else if (mid==high) mid--;
+        int ele=m.get(mid);
+        int prev=m.get(mid-1);
+        int next=m.get(mid+1);
+        if (ele>prev && ele>next)  return mid;
+        else if (prev>ele)
+        {
+            return hat(m,l,mid-1,low,high);
+        }
+        return hat(m,mid+1,h,low,high);
+    }
+    int findInMountainArray(int target, MountainArray &m) {
+        
+        int l=0,h=m.length()-1;
+        int ans=INT32_MAX;
+        int peak =hat(m,l,h,l,h);
+        int mid= m.get(peak);
+        int low=m.get(0);
+        int high=m.get(h);
+        if (mid==target)  return peak;
+        //cout<<peak<<' ';
+        if (mid>=target && target>=low &&  finding1(target,m,l,peak,ans))   return ans;
+        
+         if  (target<=mid && high<=target && finding2(target,m,peak+1,h,ans))   return ans;
+        
+        return -1;
+        
+    }
+};
