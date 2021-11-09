@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int largestValsFromLabels(vector<int>& values, vector<int>& labels, int numWanted, int useLimit) {
+      
+        unordered_map<int,int> mp;
+        int n= values.size();
+        for (int i=0;i<n;i++)
+        {
+            mp[labels[i]]=useLimit;
+        }
+        
+        priority_queue<pair<int,int>> maxh;
+        for (int i=0;i<n;i++)
+        {
+            maxh.push({values[i],labels[i]});
+        }
+        pair<int,int> p;
+        int ans=0;
+        while(!maxh.empty() && numWanted>0)
+        {
+            p= maxh.top(); maxh.pop();
+            if (mp.find(p.second)!=mp.end())
+            {
+                ans= ans+p.first;
+                mp[p.second]--;
+                if (mp[p.second]==0) mp.erase(p.second);
+                 numWanted--;
+            }
+           
+            
+        }
+        return ans;
+    }
+};
