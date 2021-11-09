@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<string> findOcurrences(string text, string first, string second) {
+        
+        stringstream ss(text);
+        vector<string> ans,res;
+        string s;
+        while(ss>>s)
+        {
+           ans.push_back(s);
+        }
+        int n= ans.size();
+        for (int i=0;i<n;i++)
+        {
+            if (ans[i]==first)
+            {
+                if (i+1 <n && ans[i+1]==second)
+                {
+                    if (i+2<n)
+                    {
+                       res.push_back(ans[i+2]) ;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+};
