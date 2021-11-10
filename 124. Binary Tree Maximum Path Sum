@@ -1,0 +1,36 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int mps(TreeNode*root,int &maxy)
+    {
+        if (root==NULL)  return 0;
+        
+        int lmps=mps(root->left,maxy);
+        int rmps=mps(root->right,maxy);
+        
+        int sum=lmps+rmps+root->val;
+        int k=max(lmps+root->val,root->val);
+        k=max(k,rmps+root->val);
+        int h=k;
+        k=max(k,sum);
+        maxy=max(k,maxy);
+        return  h;
+    }
+    int maxPathSum(TreeNode* root) {
+        
+        int maxy=INT32_MIN;
+        int a= mps(root,maxy);
+        return maxy;
+        
+    }
+};
