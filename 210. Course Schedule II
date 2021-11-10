@@ -1,0 +1,61 @@
+class Solution {
+public:
+    vector<int> findOrder(int numc, vector<vector<int>>& pre) {
+         vector<int> ans;
+        int n=numc;
+        if (n==0)  return ans;
+        vector<int> adj[n];
+        for (int i=0;i<pre.size();i++)
+        {
+            int u= pre[i][0];
+            int v=pre[i][1];
+            adj[v].push_back(u);
+        }
+        
+        vector<int> indegree(n,0);
+        for (int i=0;i<pre.size();i++)
+        {
+            indegree[pre[i][0]]++;
+        }
+        queue<int> q;
+        for (int i=0;i<indegree.size();i++)
+        {
+            if (indegree[i]==0)
+            {
+                q.push(i);
+            }
+        }
+       
+        if (q.size()==0)  return ans;
+        
+        while(!q.empty())
+        {
+            int count=q.size();
+            for (int i=0;i<count;i++)
+            {
+                
+                int u= q.front();
+                q.pop();
+                //cout<<u<<' ';
+                ans.push_back(u);
+                
+                for (auto v:adj[u])
+                {
+                    indegree[v]--;
+                    if (indegree[v]==0)
+                    {
+                        q.push(v);
+                    }
+                }
+                
+            }
+        }
+        vector<int> dum;
+        for (int i=0;i<indegree.size();i++)
+        {
+            if (indegree[i]!=0)  return  dum;
+        }
+        return ans;
+        
+    }
+};
