@@ -1,0 +1,40 @@
+class Solution {
+public:
+    bool dfs(int u,vector<int>adj[],vector<int> &st,vector<bool> &visited)
+    {
+        visited[u]=true;
+        st[u]=1;
+        for (auto v:adj[u])
+        {
+            if (visited[v]==false && dfs(v,adj,st,visited))  return true;
+            else if (st[v]==1)  return true;
+            
+        }
+        st[u]=0;
+        return false;
+    }
+    bool canFinish(int numc, vector<vector<int>>& pre) {
+        int n=numc;
+        vector<int> adj[n];
+        for (int i=0;i<pre.size();i++)
+        {
+            int u= pre[i][0];
+            int v=pre[i][1];
+            adj[v].push_back(u);
+        }
+        
+        
+        vector<bool> visited(n,false);
+        
+        for (int i=0;i<n;i++)
+        {
+            if (visited[i]==false)
+            {
+                vector<int> st(n,0);
+                if (dfs(i,adj,st,visited))  return false;
+            }
+        }
+        return true;
+        
+    }
+};
