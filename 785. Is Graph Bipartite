@@ -1,0 +1,68 @@
+class Solution {
+public:
+    bool isBipartite(vector<vector<int>>& graph) {
+       int n= graph.size();
+        vector<int> adj[n];
+        for (int i=0;i<n;i++)
+        {
+            for (int j=0;j<graph[i].size();j++)
+            {
+                adj[i].push_back(graph[i][j]);
+            }
+        }
+        
+        unordered_set<int>st1,st2;
+        
+        queue<int> q;
+        q.push(0);
+        int u,count;
+        bool turn=true;
+        for (int j=0;j<n;j++)
+        {
+            if (st1.find(j)==st1.end()  && st2.find(j)==st2.end())
+            {
+                q.push(j);
+            }
+            else  continue;
+        while(!q.empty())
+        {
+            count= q.size();
+            for (int i=0;i<count;i++)
+            {
+                u= q.front(); q.pop();
+                if (turn)
+                {
+                    if (st2.find(u)!=st2.end())  return false;
+                    
+                    st1.insert(u);
+                    
+                    for (auto v: adj[u])
+                    {
+                        if (st2.find(v)==st2.end())    q.push(v);
+                        
+                    }
+                    
+                }
+                else
+                {
+                    if (st1.find(u)!=st1.end())  return false;
+                    
+                    st2.insert(u);
+                    
+                    for (auto v: adj[u])
+                    {
+                        if (st1.find(v)==st1.end())  q.push(v);
+                    }
+                   
+                    
+                }
+            }
+            if (turn)  turn=false;
+            else turn= true;
+            
+            
+        }
+        }
+        return true;
+    }
+};
