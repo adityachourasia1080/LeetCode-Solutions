@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int candy(vector<int>& r) 
+    {
+        vector<int> dis(r.size(),1);
+        int ans=0;
+        for (int i=0;i<r.size()-1;i++)
+        {
+            if (r[i+1]>r[i])
+            {
+                dis[i+1]=dis[i]+1;
+            }
+        }
+        
+        for (int i=r.size()-1;i>0;i--)
+        {
+            if (r[i-1]>r[i])
+            {
+                if (dis[i-1]<=dis[i])
+                {
+                    dis[i-1]=dis[i]+1;
+                }
+            }
+        }
+        
+        for (int i=0;i<r.size();i++)
+        {
+            ans+=dis[i];
+        }
+        return ans;
+        
+    }
+};
