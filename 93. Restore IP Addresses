@@ -1,0 +1,62 @@
+class Solution {
+public:
+    bool check(string form)
+    {
+        int count=0;
+        for (int i=0;i<form.length();i++)
+        {
+            if (form[i]=='.')  count++;
+        }
+        return count==4 ? true: false;
+    }
+    void hat(string s,int i,string form,vector<string>& res,int dots)
+    {
+        if (i==s.length())
+        {
+           if ( check(form))  
+           { 
+               res.push_back(form.substr(1,form.length()-1));
+           }
+            return ;
+        }
+        if (dots>4)  return ;
+        if (s[i]=='0')  
+        {
+            form.push_back('.');
+            form.push_back(s[i]);
+            hat(s,i+1,form,res,dots+1);
+            return;
+        }
+        
+        int no=0;
+        no= s[i]-'0';
+        string newy=form;
+        newy.push_back('.');
+        newy.push_back(s[i]);
+        hat(s,i+1,newy,res,dots+1);
+        
+        if (i+1<s.length())
+        {
+        no=no*10+(s[i+1]-'0');
+            newy.push_back(s[i+1]);
+            hat(s,i+2,newy,res,dots+1);
+        }
+        
+        if (i+2<s.length())
+        {
+            no=no*10+(s[i+2]-'0');
+            if (no<256)
+            {
+                newy.push_back(s[i+2]);
+                hat(s,i+3,newy,res,dots+1);
+            }
+        }
+        
+    }
+    vector<string> restoreIpAddresses(string s) {
+        vector<string> res;
+        string form;
+        hat(s,0,form,res,0);
+        return res;
+    }
+};
