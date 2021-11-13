@@ -1,0 +1,45 @@
+class Solution {
+public:
+    vector<string> spellchecker(vector<string>& wordlist, vector<string>& queries) 
+     {
+          unordered_map<string,bool>mached;
+          unordered_map<string,string>first;
+          unordered_map<string,string>vowel;
+          for(int i=0;i<wordlist.size();i++)
+          {
+              mached[wordlist[i]]=true;
+              string serial="",lower="";
+              string put=wordlist[i];
+              for(int j=0;j<wordlist[i].size();j++)
+              {
+                  if(wordlist[i][j]>='A'&&wordlist[i][j]<='Z')wordlist[i][j]=char(int(wordlist[i][j])-65+97);
+                  lower+=wordlist[i][j];
+                  if(wordlist[i][j]=='a'||wordlist[i][j]=='e'||wordlist[i][j]=='i'||wordlist[i][j]=='o'||wordlist[i][j]=='u')wordlist[i][j]='*';
+                  serial+=wordlist[i][j];
+              }
+             if(vowel.find(serial)==vowel.end())vowel[serial]=put;
+             if(first.find(lower)==first.end())first[lower]=put;
+          }
+          vector<string>Ans;
+        for(int i=0;i<queries.size();i++)
+        {
+            string temp="";
+            if(mached.find(queries[i])!=mached.end()){Ans.push_back(queries[i]);continue;}
+              string serial="",lower="";
+              for(int j=0;j<queries[i].size();j++)
+              {
+                  if(queries[i][j]>='A'&&queries[i][j]<='Z')queries[i][j]=char(int(queries[i][j])-65+97);
+                  lower+=queries[i][j];
+                  if(queries[i][j]=='a'||queries[i][j]=='e'||queries[i][j]=='i'||queries[i][j]=='o'||queries[i][j]=='u')queries[i][j]='*';
+                  serial+=queries[i][j];
+              }
+            if(first.find(lower)!=first.end()){Ans.push_back(first[lower]);continue;}
+            if(vowel.find(serial)!=vowel.end()){Ans.push_back(vowel[serial]);continue;}
+            Ans.push_back("");
+            
+            
+            
+        }
+        return Ans;
+    }
+};
