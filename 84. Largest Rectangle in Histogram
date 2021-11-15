@@ -1,0 +1,59 @@
+class Solution {
+public:
+    vector<int> hat1(vector<int> heights)
+    {
+        stack<int> st;
+        vector<int> ans;
+        int n= heights.size();
+        for (int i=n-1;i>=0;i--)
+        {
+            if (st.empty())  ans.push_back(n);
+            else if (heights[st.top()]<heights[i] )  ans.push_back(st.top());
+             else
+            {
+                while(!st.empty()  && heights[st.top()]>=heights[i])  st.pop();
+                 
+                 if(st.empty()) ans.push_back(n);
+                 else ans.push_back(st.top());
+               
+            }
+            st.push(i);
+        }
+        reverse(ans.begin(),ans.end());
+        return ans;
+    }
+    
+    vector<int> hat2(vector<int> heights)
+    {
+        stack<int> st;
+        vector<int> ans;
+        int n= heights.size();
+        for (int i=0;i<n;i++)
+        {
+            if (st.empty())  ans.push_back(-1);
+            else if (heights[st.top()]<heights[i] )  ans.push_back(st.top());
+             else
+            {
+                while(!st.empty()  && heights[st.top()]>=heights[i])  st.pop();
+                 
+                 if(st.empty()) ans.push_back(-1);
+                 else ans.push_back(st.top());
+               
+            }
+             st.push(i);
+        }
+        return ans;
+    }
+    int largestRectangleArea(vector<int>& heights) {
+       
+        vector<int> nsr= hat1(heights);
+        vector<int> nsl=hat2(heights);
+        int area,max_area=INT32_MIN;
+        for (int i=0;i<heights.size();i++)
+        {
+            area= (nsr[i]-nsl[i]-1)*heights[i];
+            max_area=max(max_area,area);
+        }
+        return max_area;
+    }
+};
