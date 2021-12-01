@@ -1,0 +1,83 @@
+    class trie
+    {
+        public: trie* Node;
+             vector<trie*> v;
+        bool isend;
+        
+        trie()
+        {
+            Node=NULL;
+            for (int i=0;i<26;i++)
+            {
+                v.push_back(NULL);
+            }
+            isend=false;
+        }
+        
+    };
+    
+class WordDictionary {
+public:
+
+    trie* head;
+    WordDictionary() {
+        head= new trie();
+        
+    }
+    
+    void addWord(string word) {
+        trie * temp= head;
+        int i=0;
+        while(i<word.length())
+        {
+            if (temp->v[word[i]-'a']==NULL)  temp->v[word[i]-'a']= new trie();
+            temp= temp->v[word[i]-'a'];
+            i++;
+        }
+        temp->isend=true;
+        
+    }
+    bool hat(string word,int i,trie* temp)
+    {
+        if(i==word.size())
+        {
+            if(temp->isend)
+                return true;
+            
+            return false;
+        }
+        
+        if (word[i]=='.')
+        {
+            for (int j=0;j<26;j++)
+            {
+                if (temp->v[j])
+                {
+               if ( hat( word,i+1,temp->v[j]))    return true;
+                    }
+            }
+        }
+        else
+        {
+            if (temp->v[word[i]-'a']==NULL)   return false;
+            else  
+            {if (hat(word,i+1,temp->v[word[i]-'a']))   return true;
+             }
+        }
+        return false;
+        
+    }
+    bool search(string word) {
+        trie * temp= head;
+        
+        return hat( word,0,temp);
+        
+    }
+};
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary* obj = new WordDictionary();
+ * obj->addWord(word);
+ * bool param_2 = obj->search(word);
+ */
