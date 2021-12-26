@@ -1,0 +1,104 @@
+M1 ____ BRUTE FORCE BUT GIVES TLE
+class Solution {
+public:
+    bool hat(string s, string locked,int i,stack<char> st)
+    {
+        if (i==s.length())
+        {
+           return st.empty() ?   true: false;
+        }
+       if (s[i]=='(')
+       {
+           if (locked[i]=='0')
+           {
+               st.push('(');
+               if (hat(s,locked,i+1,st)) return true;
+               st.pop();
+               
+               if (!st.empty())
+               {
+               st.pop();
+               return hat(s,locked,i+1,st);
+                   }
+               else   return false;
+           }
+           else
+           {
+               st.push('(');
+               return hat(s,locked,i+1,st);
+           }
+       }
+        
+            if (locked[i]=='0')
+            {
+                if (!st.empty())
+                {
+                    st.pop();
+                    if (hat(s,locked,i+1,st))  return true;
+                    
+                    st.push('(');
+                    
+                    st.push('(');
+                    return hat(s,locked,i+1,st);
+                }
+                else
+                {
+                    st.push('(');
+                    return hat(s,locked,i+1,st);
+                }
+
+            }
+               
+                    if (st.empty()) return false;
+                    
+                    st.pop();
+                    return hat(s,locked,i+1,st);
+               
+            
+        
+    }
+    bool canBeValid(string s, string locked) {
+        stack<char> st;
+        
+        return hat(s,locked,0,st);
+        
+    }
+};
+
+M2-------O(N)  && O(1)
+
+class Solution {
+public:
+    bool canBeValid(string s, string locked) {
+        int n= s.length();
+        if (n%2!=0)  return false;
+        int lockedopen=0,lockedclose=0,free=0;
+        for (int i=0;i<n;i++)
+        {
+            if (locked[i]=='0')   free++;
+            else 
+            {
+                if (s[i]=='(')  lockedopen++;
+                else lockedclose++;
+            }
+            
+            if (lockedclose> lockedopen+free)   return false;
+        }
+        
+        lockedclose=0,lockedopen=0,free=0;
+        
+        for (int i=n-1;i>=0;i--)
+        {
+            if (locked[i]=='0')   free++;
+            else 
+            {
+                if (s[i]=='(')  lockedopen++;
+                else lockedclose++;
+            }
+            
+            if (lockedopen>lockedclose+free)   return false;
+        }
+        return true;
+        
+    }
+};
