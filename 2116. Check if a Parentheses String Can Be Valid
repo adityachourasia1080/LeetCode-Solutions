@@ -69,6 +69,21 @@ M2-------O(N)  && O(1)
 
 class Solution {
 public:
+    // co=count of opening bracket  cc=count of closing bracket
+    // Standard method to check a balanced string :
+    //for a string t be balanced 
+    // 1) while traversing fron left to right if at ant point cc> co  then unbalanced
+    // 2) while traversing from right to left if at any point co> cc then unbalanced
+    // if both condition are not true then the given string is balanced
+    
+    // we extend this idea further 
+    // lockedopen means locked[i]==1  && (
+    //lockedclose means locked[i]==1  && ')'
+    // free means the bracked which are not locked so can be reversed
+    // so our problem boil down to check (lockedclose > lockedopen+ free) in left to right traversal
+    // and if it true then we cannot balance the string
+    // similarly for right to left we checked (lockedopen>lockedclose+free) then not balanced
+    // if both condition are false then the stringcan be balanced
     bool canBeValid(string s, string locked) {
         int n= s.length();
         if (n%2!=0)  return false;
